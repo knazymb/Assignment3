@@ -16,8 +16,10 @@ public class Main {
         passed += testT3() ? 1 : 0;
         passed += testT4() ? 1 : 0;
         passed += testT5() ? 1 : 0;
+        passed += testT6() ? 1 : 0;
+        passed += testT7() ? 1 : 0;
 
-        System.out.println("SUMMARY: " + passed + "/5 PASS");
+        System.out.println("SUMMARY: " + passed + "/7 PASS");
     }
 
     private static boolean testT1() {
@@ -169,6 +171,54 @@ public class Main {
                             + " | after=" + expectedAfter
             );
         }
+
+        return pass;
+    }
+    private static boolean testT6() {
+        Channel push = new PushChannel();
+
+        Reminder reminder = new Reminder(
+                "N4",
+                "Meeting at 10:00",
+                push
+        );
+
+        String actual = reminder.execute();
+        String expected = "PUSH: [Notification] Meeting at 10:00";
+
+        boolean pass = actual.equals(expected);
+
+        printResult(
+                "T6",
+                pass,
+                "Reminder + PushChannel",
+                actual,
+                expected
+        );
+
+        return pass;
+    }
+    private static boolean testT7() {
+        Channel push = new PushChannel();
+
+        UrgentAlert alert = new UrgentAlert(
+                "N5",
+                "Server is down",
+                push
+        );
+
+        String actual = alert.execute();
+        String expected = "PUSH: [Notification] URGENT: Server is down";
+
+        boolean pass = actual.equals(expected);
+
+        printResult(
+                "T7",
+                pass,
+                "UrgentAlert + PushChannel",
+                actual,
+                expected
+        );
 
         return pass;
     }
